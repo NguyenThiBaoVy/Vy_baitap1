@@ -1,0 +1,1468 @@
+/* ==========================================================================
+   Weather Planner - Glassmorphism UI Style
+   Rules: External CSS (css/styles.css), pure CSS3, Glassmorphism
+   ========================================================================== */
+
+:root {
+  /* ==========================================================================
+     Chế độ Sáng / Light Mode (Mặc định)
+     ========================================================================== */
+  --bg-overlay: radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.35) 0%, rgba(240, 245, 250, 0.55) 100%);
+  --bg-gradient: var(--bg-overlay);
+  --glass-bg: rgba(255, 255, 255, 0.75);
+  --glass-bg-hover: rgba(255, 255, 255, 0.88);
+  --glass-inset-bg: rgba(255, 255, 255, 0.6);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-border: rgba(255, 255, 255, 0.75);
+  --glass-border-light: rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+  --glass-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.05);
+
+  /* Bảng màu chữ chế độ Sáng (Tương phản cao trên nền sáng) */
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-placeholder: #64748b;
+  --text-shadow-contrast: none;
+
+  /* Màu ô Input & Select */
+  --input-bg: rgba(255, 255, 255, 0.82);
+  --input-bg-focus: rgba(255, 255, 255, 0.98);
+
+  /* Màu nhấn (Accent Colors) */
+  --accent-color: #10b981;
+  --accent-gold: #f59e0b;
+  --accent-teal: #0d9488;
+  --accent-badge: rgba(0, 0, 0, 0.06);
+
+  /* Bổ trợ */
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --radius-lg: 24px;
+  --radius-md: 16px;
+  --radius-sm: 10px;
+  --radius-full: 9999px;
+  --transition-smooth: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ==========================================================================
+   Chế độ Tối / Dark Mode ([data-theme="dark"])
+   ========================================================================== */
+[data-theme="dark"] {
+  --bg-overlay: radial-gradient(circle at 20% 20%, rgba(15, 23, 42, 0.65) 0%, rgba(2, 6, 23, 0.85) 100%);
+  --bg-gradient: var(--bg-overlay);
+  --glass-bg: rgba(15, 23, 42, 0.65);
+  --glass-bg-hover: rgba(30, 41, 59, 0.78);
+  --glass-inset-bg: rgba(30, 41, 59, 0.55);
+  --glass-blur: blur(16px) saturate(180%);
+  --glass-border: rgba(255, 255, 255, 0.18);
+  --glass-border-light: rgba(255, 255, 255, 0.12);
+  --glass-shadow: 0 16px 40px rgba(0, 0, 0, 0.4);
+  --glass-shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.25);
+
+  /* Bảng màu chữ chế độ Tối (Trắng sáng nổi bật trên nền kính tối) */
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-placeholder: #64748b;
+  --text-shadow-contrast: 0 2px 4px rgba(0, 0, 0, 0.4);
+
+  /* Màu ô Input & Select */
+  --input-bg: rgba(30, 41, 59, 0.65);
+  --input-bg-focus: rgba(30, 41, 59, 0.9);
+
+  /* Màu nhấn (Accent Colors) */
+  --accent-color: #38ef7d;
+  --accent-gold: #ffbe3d;
+  --accent-teal: #11998e;
+  --accent-badge: rgba(255, 255, 255, 0.15);
+}
+
+/* Reset & Box Sizing */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  background-color: #0f2027;
+  background-image: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Lớp phủ gradient nền chính với --bg-gradient */
+.app-background-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bg-gradient);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Container chính */
+.app-container {
+  position: relative;
+  z-index: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 20px 48px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Glassmorphism Panel Core */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--glass-shadow);
+  transform-style: preserve-3d;
+}
+
+.glass-inset {
+  background: var(--glass-inset-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border-light);
+  border-radius: var(--radius-md);
+  transform-style: preserve-3d;
+}
+
+/* ==========================================================================
+   3D Tilt & Glare Sheen Styles
+   ========================================================================== */
+.tilt-enabled {
+  position: relative;
+  transition: transform 0.12s cubic-bezier(0.2, 0, 0.2, 1), box-shadow 0.25s ease;
+  will-change: transform;
+}
+
+.tilt-enabled.tilt-resetting {
+  transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.4s ease;
+}
+
+/* Vệt sáng phản quang kính (Glare overlay) */
+.glass-glare-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10;
+  mix-blend-mode: overlay;
+}
+
+/* 1. Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.brand-icon {
+  font-size: 2.2rem;
+  background: rgba(255, 255, 255, 0.2);
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.2);
+}
+
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.brand-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.header-datetime {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.header-datetime .time {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.header-datetime .date {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* Nút chuyển đổi Theme (Light / Dark Mode Toggle) */
+.theme-toggle-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-soft);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.theme-toggle-btn:hover {
+  background: var(--glass-bg-hover);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.theme-toggle-btn:active {
+  transform: translateY(0) scale(0.96);
+}
+
+/* 2. Main Layout (CSS Grid 2 cột: tỷ lệ 360px : 1fr) */
+.main-layout {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ==========================================================================
+   Cột Trái: Weather Column & Widget
+   ========================================================================== */
+.weather-column {
+  position: sticky;
+  top: 24px;
+}
+
+.weather-card {
+  padding: 30px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  text-align: center;
+}
+
+.city-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  text-align: left;
+}
+
+.city-selector-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.city-select-dropdown {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.city-select-dropdown:focus, .city-select-dropdown:hover {
+  background: var(--input-bg-focus);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.location-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.22);
+  border: 1px solid var(--glass-border);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  align-self: center;
+}
+
+.dot.live-pulse {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-color);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.7);
+  animation: pulse-dot 1.8s infinite;
+}
+
+@keyframes pulse-dot {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(56, 239, 125, 0.7); }
+  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(56, 239, 125, 0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(56, 239, 125, 0); }
+}
+
+.weather-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.weather-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 104px;
+  height: 104px;
+  animation: float-icon 4s ease-in-out infinite;
+}
+
+@keyframes float-icon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-7px); }
+}
+
+/* ==========================================================================
+   Animated SVG Sun Icon Styles
+   Xoay chậm (24s) & các tia nắng nhấp nháy/thở nhẹ (3.5s)
+   ========================================================================== */
+.animated-sun-icon {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  filter: drop-shadow(0 4px 18px rgba(255, 179, 0, 0.45));
+}
+
+/* 1. Xoay chậm rãi cụm tia nắng quanh tâm (24s / vòng) */
+.sun-rays {
+  transform-origin: 50px 50px;
+  animation: sun-spin 24s linear infinite;
+}
+
+@keyframes sun-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* 2. Hiệu ứng thở / nhấp nháy êm dịu của từng tia nắng (3.5s) */
+.sun-ray {
+  animation: sun-ray-shimmer 3.5s ease-in-out infinite alternate;
+}
+
+/* Xen kẽ độ trễ giữa các tia chẵn và lẻ để tạo nhịp điệu tự nhiên */
+.sun-ray.ray-1, .sun-ray.ray-3, .sun-ray.ray-6, .sun-ray.ray-8 {
+  animation-delay: 0s;
+}
+
+.sun-ray.ray-2, .sun-ray.ray-4, .sun-ray.ray-5, .sun-ray.ray-7 {
+  animation-delay: 1.75s;
+}
+
+@keyframes sun-ray-shimmer {
+  0% {
+    opacity: 0.7;
+    filter: brightness(0.95);
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1.2);
+  }
+}
+
+/* 3. Tâm mặt trời thở phát quang nhẹ nhàng */
+.sun-core {
+  transform-origin: 50px 50px;
+  animation: sun-core-breathe 4s ease-in-out infinite alternate;
+}
+
+@keyframes sun-core-breathe {
+  0% {
+    transform: scale(0.98);
+  }
+  100% {
+    transform: scale(1.02);
+  }
+}
+
+/* 4. Vầng hào quang mờ */
+.sun-aura {
+  transform-origin: 50px 50px;
+  animation: sun-aura-pulse 3.5s ease-in-out infinite alternate;
+}
+
+@keyframes sun-aura-pulse {
+  0% {
+    opacity: 0.4;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 0.85;
+    transform: scale(1.08);
+  }
+}
+
+.temp-wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  transition: transform 0.25s ease;
+}
+
+.temp-wrapper.temp-updated {
+  animation: temp-pop 0.35s ease;
+}
+
+@keyframes temp-pop {
+  0% { transform: scale(0.9); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+.temp-value {
+  font-size: 4.5rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.45), var(--text-shadow-contrast);
+}
+
+.temp-unit {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-top: 6px;
+  color: var(--accent-gold);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.condition-badge {
+  background: var(--accent-badge);
+  border: 1px solid var(--glass-border);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Grid thông số thời tiết phụ */
+.weather-metrics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.metric-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  text-align: left;
+}
+
+.metric-icon {
+  font-size: 1.5rem;
+}
+
+.metric-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.metric-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.metric-value {
+  font-size: 0.98rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+}
+
+.weather-tip {
+  padding: 14px 16px;
+  text-align: left;
+  border-left: 4px solid var(--accent-gold);
+}
+
+.tip-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  font-size: 0.88rem;
+  color: var(--accent-gold);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.weather-tip p {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+/* ==========================================================================
+   Cột Phải: Destination & Itinerary Column
+   ========================================================================== */
+.destination-column {
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  min-height: 600px;
+}
+
+/* Khối Lịch Trình Chuyến Đi (Itinerary Planner) */
+.itinerary-section {
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow-soft);
+}
+
+.itinerary-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.itinerary-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.itinerary-badge-icon {
+  font-size: 1.6rem;
+  background: rgba(255, 255, 255, 0.22);
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--glass-border);
+}
+
+.itinerary-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.itinerary-subtitle {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.itinerary-stats {
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+/* Form Thêm Lịch Trình */
+.itinerary-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: flex-end;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--glass-border);
+}
+
+.itinerary-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.itinerary-input-group.name-group {
+  flex: 2 1 220px;
+}
+
+.itinerary-input-group.time-group {
+  flex: 1 1 160px;
+}
+
+.itinerary-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.itinerary-input-group input {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-sm);
+  padding: 9px 12px;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  outline: none;
+  transition: var(--transition-smooth);
+}
+
+.itinerary-input-group input:focus {
+  background: var(--input-bg-focus);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.itinerary-input-group input::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
+}
+
+.add-itinerary-btn {
+  background: linear-gradient(135deg, #11998e, var(--accent-color));
+  border: none;
+  color: #0b2219;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  padding: 10px 20px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--transition-smooth);
+  box-shadow: 0 4px 14px rgba(56, 239, 125, 0.3);
+}
+
+.add-itinerary-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(56, 239, 125, 0.45);
+  filter: brightness(1.08);
+}
+
+.add-itinerary-btn:active {
+  transform: translateY(0);
+}
+
+/* Danh Sách Các Mục Lịch Trình */
+.itinerary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 290px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.itinerary-list::-webkit-scrollbar {
+  width: 6px;
+}
+.itinerary-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+.itinerary-list::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 4px;
+}
+
+/* Item Lịch Trình */
+.itinerary-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border-light);
+  border-radius: var(--radius-md);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+/* ==========================================================================
+   Hoạt ảnh THÊM mục: Slide-Down & Fade-In với cubic-bezier(0.16, 1, 0.3, 1)
+   ========================================================================== */
+.itinerary-item.new-item-enter {
+  animation: item-slide-down-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes item-slide-down-in {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    transform: translateY(-24px) scale(0.95);
+    border-color: rgba(56, 239, 125, 0.9);
+    box-shadow: 0 0 20px rgba(56, 239, 125, 0.6);
+  }
+  60% {
+    max-height: 120px;
+    border-color: rgba(56, 239, 125, 0.7);
+  }
+  100% {
+    opacity: 1;
+    max-height: 120px;
+    transform: translateY(0) scale(1);
+    box-shadow: none;
+  }
+}
+
+/* ==========================================================================
+   Hoạt ảnh XÓA mục: Fade-Out, Slide-Right & Thu nhỏ chiều cao về 0
+   ========================================================================== */
+.itinerary-item.item-removing {
+  animation: item-collapse-out 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+@keyframes item-collapse-out {
+  0% {
+    opacity: 1;
+    max-height: 100px;
+    transform: translateX(0) scale(1);
+    margin-bottom: 0;
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  45% {
+    opacity: 0;
+    transform: translateX(30px) scale(0.96);
+  }
+  100% {
+    opacity: 0;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-bottom: -10px;
+    border-width: 0;
+    transform: translateX(45px) scale(0.9);
+  }
+}
+
+.itinerary-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.itinerary-item-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+  transition: var(--transition-smooth);
+}
+
+.itinerary-item-time {
+  font-size: 0.8rem;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.itinerary-item-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn-toggle-visited {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--glass-border-light);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: var(--transition-smooth);
+}
+
+.btn-toggle-visited:hover {
+  background: rgba(56, 239, 125, 0.3);
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.btn-delete-itinerary {
+  background: rgba(255, 75, 75, 0.2);
+  border: 1px solid rgba(255, 75, 75, 0.35);
+  color: #ff8585;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: var(--transition-smooth);
+}
+
+.btn-delete-itinerary:hover {
+  background: rgba(255, 75, 75, 0.45);
+  border-color: #ff4b4b;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Đã đến (Visited): Đổi màu */
+.itinerary-item.visited {
+  background: rgba(56, 239, 125, 0.18);
+  border-color: rgba(56, 239, 125, 0.6);
+  box-shadow: inset 0 0 14px rgba(56, 239, 125, 0.12);
+}
+
+.itinerary-item.visited .itinerary-item-title {
+  color: #d1ffd6;
+  text-decoration: line-through;
+  opacity: 0.88;
+}
+
+.itinerary-item.visited .btn-toggle-visited {
+  background: rgba(56, 239, 125, 0.4);
+  border-color: var(--accent-color);
+  color: #ffffff;
+}
+
+.itinerary-empty {
+  text-align: center;
+  padding: 24px 16px;
+  color: var(--text-muted);
+  font-size: 0.88rem;
+}
+
+/* Header & Gợi ý điểm đến */
+.column-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.section-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.section-subtitle {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+
+.stats-badge {
+  background: var(--accent-badge);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+/* Toolbar: Tìm kiếm, Lọc, Sắp xếp, Chọn lượng hiển thị */
+.toolbar {
+  padding: 14px 18px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px;
+  background: var(--glass-inset-bg);
+  border: 1px solid var(--glass-border);
+}
+
+.control-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.control-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.search-group {
+  flex: 1 1 240px;
+  position: relative;
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  transition: var(--transition-smooth);
+}
+
+.search-group:focus-within {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: var(--input-bg-focus);
+  box-shadow: 0 0 14px rgba(255, 255, 255, 0.35);
+}
+
+.input-icon {
+  font-size: 0.95rem;
+  margin-right: 6px;
+  opacity: 0.9;
+}
+
+#search-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  padding: 9px 0;
+}
+
+#search-input::placeholder {
+  color: var(--text-placeholder);
+  opacity: 1;
+}
+
+.clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  display: none;
+  transition: var(--transition-smooth);
+}
+
+.clear-btn:hover {
+  color: var(--text-primary);
+}
+
+.glass-select {
+  background: var(--input-bg);
+  border: 1px solid var(--glass-border);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.glass-select:focus, .glass-select:hover {
+  background: var(--input-bg-focus);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.glass-select option {
+  background-color: #1e293b;
+  color: #ffffff;
+}
+
+/* Destination Cards Grid */
+.destinations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+  min-height: 250px;
+}
+
+.destination-card {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 14px;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1), 
+              background 0.3s ease, 
+              border-color 0.3s ease;
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  position: relative;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+/* Đường viền accent mảnh trên đỉnh thẻ */
+.destination-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, #11998e, var(--accent-color));
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 3;
+}
+
+/* Dải ánh sáng mờ lướt qua thẻ từ góc trên trái xuống góc dưới phải */
+.destination-card::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -80%;
+  width: 60%;
+  height: 220%;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(255, 255, 255, 0.28) 50%,
+    rgba(255, 255, 255, 0.02) 75%,
+    transparent 100%
+  );
+  transform: rotate(25deg);
+  pointer-events: none;
+  opacity: 0;
+  transition: transform 0.75s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.35s ease;
+  z-index: 2;
+}
+
+/* Trạng thái Hover: Phóng to nhẹ, tăng đổ bóng đa tầng & kích hoạt vệt sáng */
+.destination-card:hover {
+  transform: translateY(-6px) scale(1.025);
+  background: var(--glass-bg-hover);
+  border-color: rgba(255, 255, 255, 0.55);
+  box-shadow: 0 20px 42px rgba(0, 0, 0, 0.35), 
+              0 0 22px rgba(56, 239, 125, 0.2);
+}
+
+.destination-card:hover::before {
+  opacity: 1;
+}
+
+.destination-card:hover::after {
+  opacity: 1;
+  transform: rotate(25deg) translate(320%, 0);
+}
+
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Tag danh mục: Nền gradient nhẹ sang màu trắng mờ */
+.card-badge-category {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.38) 100%);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  color: var(--text-primary);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3), 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: var(--transition-smooth);
+}
+
+.destination-card:hover .card-badge-category {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.5) 100%);
+  border-color: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.35);
+}
+
+.card-weather-tag {
+  font-size: 0.76rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  color: var(--accent-gold);
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-top: 6px;
+  line-height: 1.35;
+  text-shadow: var(--text-shadow-contrast);
+}
+
+.card-location {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.card-desc {
+  font-size: 0.84rem;
+  color: var(--text-muted);
+  line-height: 1.48;
+}
+
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  padding-top: 10px;
+}
+
+.card-tag {
+  font-size: 0.78rem;
+  color: var(--accent-color);
+  font-weight: 500;
+}
+
+.card-action-btn {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid var(--glass-border-light);
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.card-action-btn:hover {
+  background: #ffffff;
+  color: #1a2a3a;
+}
+
+/* Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-secondary);
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+/* 3. Pagination Controls */
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.pagination-info {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.page-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--glass-border-light);
+  color: var(--text-primary);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-smooth);
+}
+
+.page-btn:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.6);
+}
+
+.page-btn.active {
+  background: #ffffff;
+  color: #1b2838;
+  font-weight: 700;
+  border-color: #ffffff;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.page-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ==========================================================================
+   Responsive Breakpoints
+   ========================================================================== */
+@media (max-width: 1024px) {
+  .main-layout {
+    grid-template-columns: 320px 1fr;
+    gap: 20px;
+  }
+}
+
+/* ==========================================================================
+   Full-Width Mobile Optimized Media Queries (<= 768px & <= 480px)
+   ========================================================================== */
+@media screen and (max-width: 768px) {
+  /* 1. Đặt lại vùng đệm Container chính */
+  .app-container {
+    padding: 12px 14px 36px;
+    gap: 16px;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 2. Header gọn gàng trên mobile */
+  .app-header {
+    padding: 14px 16px;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .header-actions {
+    gap: 12px;
+  }
+
+  .header-datetime {
+    align-items: flex-end;
+  }
+
+  /* 3. Chuyển bố cục 2 cột sang xếp chồng dọc 1 cột */
+  .main-layout {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    width: 100%;
+  }
+  
+  .weather-column {
+    position: static; /* Hủy sticky trên mobile để cuộn tự nhiên */
+    width: 100%;
+  }
+
+  /* 4. Tinh chỉnh Thẻ Thời Tiết & Thu nhỏ nhiệt độ */
+  .weather-card {
+    padding: 20px 16px;
+    gap: 16px;
+    border-radius: var(--radius-md);
+  }
+  
+  .weather-status-icon {
+    width: 84px;
+    height: 84px;
+  }
+  
+  .temp-value {
+    font-size: 3.2rem; /* Thu nhỏ từ 4.5rem để vừa vặn màn hình */
+  }
+  
+  .temp-unit {
+    font-size: 1.4rem;
+  }
+  
+  .weather-metrics-grid {
+    grid-template-columns: 1fr 1fr; /* Lưới 2x2 cân đối tuyệt đối */
+    gap: 8px;
+  }
+  
+  .metric-item {
+    padding: 10px 12px;
+  }
+
+  /* 5. Khối Lịch trình & Cột Phải */
+  .destination-column {
+    padding: 16px 14px;
+    gap: 20px;
+    border-radius: var(--radius-md);
+  }
+  
+  .itinerary-section {
+    padding: 16px 14px;
+    border-radius: var(--radius-md);
+  }
+  
+  .itinerary-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+  }
+  
+  .itinerary-input-group.name-group,
+  .itinerary-input-group.time-group,
+  .add-itinerary-btn {
+    width: 100%;
+    flex: none;
+    justify-content: center;
+  }
+
+  /* 6. Toolbar & Lưới thẻ địa điểm 1 cột */
+  .toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 12px;
+    gap: 10px;
+  }
+  
+  .control-group {
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  .control-group .glass-select {
+    flex: 1;
+    max-width: 60%;
+  }
+  
+  .search-group {
+    width: 100%;
+    flex: none;
+  }
+  
+  .destinations-grid {
+    grid-template-columns: 1fr; /* 1 cột cho từng thẻ card */
+    gap: 14px;
+  }
+
+  /* 7. Phân trang */
+  .pagination-container {
+    flex-direction: column;
+    gap: 12px;
+    text-align: center;
+  }
+
+  .pagination-controls {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Tối ưu thêm cho màn hình siêu nhỏ (<= 420px) */
+@media screen and (max-width: 420px) {
+  .temp-value {
+    font-size: 2.7rem;
+  }
+  
+  .section-title {
+    font-size: 1.32rem;
+  }
+  
+  .itinerary-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .itinerary-item-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}

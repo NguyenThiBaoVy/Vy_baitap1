@@ -1,462 +1,263 @@
 <!DOCTYPE html>
-<html lang="vi" data-theme="light">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Vy's TaskFlow - Quản Lý Công Việc Chuyên Nghiệp</title>
-  
-  <!-- Google Fonts: Plus Jakarta Sans -->
+  <title>Weather Planner - Lên Kế Hoạch Du Lịch Thông Minh</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <!-- Ambient Pastel Glow Orbs -->
-  <div class="ambient-glow glow-pink" aria-hidden="true"></div>
-  <div class="ambient-glow glow-purple" aria-hidden="true"></div>
-  <div class="ambient-glow glow-blue" aria-hidden="true"></div>
+  <div class="app-background-overlay"></div>
 
-  <!-- Main App Shell -->
   <div class="app-container">
-    
-    <!-- ================= 1. HEADER & TOP NAV ================= -->
-    <header class="dashboard-header">
-      <div class="header-top">
-        <div class="brand-area">
-          <div class="brand-avatar">
-            <span>🌸</span>
-          </div>
-          <div class="greeting-box">
-            <h1 class="greeting-heading" id="greetingMessage">Chào Vy, hôm nay bạn thế nào?</h1>
-            <p class="greeting-dynamic" id="greetingSubtitle">Chúc Vy một ngày làm việc tràn đầy năng lượng và hiệu quả!</p>
-          </div>
-        </div>
-
-        <!-- Top Right Actions: Clock & Theme Toggle -->
-        <div class="header-actions">
-          <!-- Real-time Clock Badge -->
-          <div class="realtime-clock" aria-label="Thời gian thực">
-            <svg class="clock-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            <div class="clock-content">
-              <span class="clock-digits" id="liveClock">00:00:00</span>
-              <span class="clock-date" id="liveDate">Đang tải ngày...</span>
-            </div>
-          </div>
-
-          <!-- Dark / Light Mode Toggle Button -->
-          <button type="button" class="theme-toggle-btn" id="themeToggleBtn" title="Chuyển chế độ Sáng / Tối" aria-label="Chuyển đổi giao diện">
-            <span class="theme-icon light-icon">☀️</span>
-            <span class="theme-icon dark-icon">🌙</span>
-          </button>
+    <!-- Header -->
+    <header class="app-header glass-panel">
+      <div class="brand">
+        <span class="brand-icon">⛅</span>
+        <div>
+          <h1 class="brand-title">Weather Planner</h1>
+          <p class="brand-subtitle">Khám phá &amp; Lên lịch trình theo điều kiện thời tiết</p>
         </div>
       </div>
-
-      <!-- Overall Productivity & Progress Bar Banner -->
-      <div class="progress-banner">
-        <div class="progress-info">
-          <div class="progress-label-group">
-            <span class="progress-title">Tiến độ hoàn thành</span>
-            <span class="progress-percentage" id="progressPercentage">0%</span>
-          </div>
-          <div class="progress-subtext" id="progressSummaryText">Đang tải trạng thái...</div>
+      <div class="header-actions">
+        <div class="header-datetime" id="current-datetime">
+          <span class="time" id="clock-display">--:--</span>
+          <span class="date" id="date-display">Đang cập nhật...</span>
         </div>
-        <div class="progress-track" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-          <div class="progress-fill" id="progressFill" style="width: 0%;"></div>
-        </div>
-
-        <!-- Quick Summary Mini Cards -->
-        <div class="mini-metrics-grid">
-          <div class="mini-metric-chip total-chip">
-            <span class="chip-dot"></span>
-            <span class="chip-name">Tổng việc:</span>
-            <strong class="chip-val" id="metricTotal">0</strong>
-          </div>
-          <div class="mini-metric-chip pending-chip">
-            <span class="chip-dot"></span>
-            <span class="chip-name">Cần làm:</span>
-            <strong class="chip-val" id="metricPending">0</strong>
-          </div>
-          <div class="mini-metric-chip completed-chip">
-            <span class="chip-dot"></span>
-            <span class="chip-name">Đã xong:</span>
-            <strong class="chip-val" id="metricCompleted">0</strong>
-          </div>
-          <div class="mini-metric-chip overdue-chip">
-            <span class="chip-dot"></span>
-            <span class="chip-name">Quá hạn:</span>
-            <strong class="chip-val" id="metricOverdue">0</strong>
-          </div>
-        </div>
+        <button type="button" id="theme-toggle-btn" class="theme-toggle-btn" aria-label="Chuyển chế độ sáng/tối" title="Chuyển chế độ sáng/tối">
+          <span class="theme-icon" id="theme-icon">🌙</span>
+        </button>
       </div>
     </header>
 
-    <!-- ================= 2. ADVANCED INPUT SECTION ================= -->
-    <section class="add-task-card" aria-label="Thêm công việc mới">
-      <div class="card-section-header">
-        <div class="section-title-wrap">
-          <span class="section-icon">✨</span>
-          <h2 class="section-title">Thêm Công Việc Mới</h2>
-        </div>
-        <span class="badge-hint">Nhanh chóng & Rõ ràng</span>
-      </div>
-
-      <form id="taskCreateForm" class="task-form" autocomplete="off" onsubmit="return false;">
-        <!-- Row 1: Task Title Input -->
-        <div class="form-group main-input-group">
-          <div class="input-wrapper" id="inputWrapper">
-            <svg class="input-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M12 20h9"></path>
-              <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-            </svg>
-            <input 
-              type="text" 
-              id="taskInput" 
-              class="form-control main-input" 
-              placeholder="Nhập tên công việc cần làm..." 
-              maxlength="150"
-              required
-            >
-          </div>
-        </div>
-
-        <!-- Row 2: Priority, Category, Due Date, and Submit Button -->
-        <div class="form-row-advanced">
-          <!-- Priority Selector -->
-          <div class="form-field">
-            <label for="taskPriority" class="field-label">Ưu tiên:</label>
-            <div class="select-wrapper">
-              <select id="taskPriority" class="form-select select-priority">
-                <option value="medium" selected>🟡 Trung bình</option>
-                <option value="high">🔴 Cao (Gấp)</option>
-                <option value="low">🟢 Thấp</option>
-              </select>
-            </div>
+    <!-- Main 2-Column Grid Layout -->
+    <main class="main-layout">
+      <!-- Cột Trái: Weather Card -->
+      <aside class="weather-column">
+        <section class="weather-card glass-panel" aria-label="Thông tin thời tiết hiện tại">
+          <div class="city-selector-wrapper">
+            <label for="city-selector" class="city-selector-label">📍 Chọn thành phố:</label>
+            <select id="city-selector" class="glass-select city-select-dropdown" aria-label="Chọn thành phố để xem thời tiết">
+              <option value="Biên Hòa">Biên Hòa (Đồng Nai)</option>
+              <option value="Đà Lạt" selected>Đà Lạt (Lâm Đồng)</option>
+              <option value="Vũng Tàu">Vũng Tàu (Bà Rịa - Vũng Tàu)</option>
+            </select>
           </div>
 
-          <!-- Category Selector -->
-          <div class="form-field">
-            <label for="taskCategory" class="field-label">Danh mục:</label>
-            <div class="select-wrapper">
-              <select id="taskCategory" class="form-select">
-                <option value="study" selected>📚 Học tập</option>
-                <option value="project">💼 Dự án</option>
-                <option value="chore">🏠 Việc nhà</option>
-                <option value="personal">💖 Cá nhân</option>
-              </select>
-            </div>
+          <div class="location-pill">
+            <span class="dot live-pulse"></span>
+            <span id="current-city">Đà Lạt, Lâm Đồng</span>
           </div>
 
-          <!-- Due Date & Time Picker -->
-          <div class="form-field">
-            <label for="taskDueDate" class="field-label">Hạn chót:</label>
-            <div class="input-date-wrapper">
-              <input type="datetime-local" id="taskDueDate" class="form-control input-datetime">
-            </div>
-          </div>
+          <div class="weather-hero">
+            <div class="weather-status-icon" id="weather-icon-wrapper" aria-label="Biểu tượng thời tiết">
+              <!-- Animated SVG Sun Icon -->
+              <svg class="animated-sun-icon" viewBox="0 0 100 100" width="96" height="96" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                  <!-- Gradient vàng cam rực rỡ cho tâm mặt trời -->
+                  <radialGradient id="sunGradient" cx="45%" cy="45%" r="55%">
+                    <stop offset="0%" stop-color="#fff5b8" />
+                    <stop offset="40%" stop-color="#ffca28" />
+                    <stop offset="100%" stop-color="#ff8f00" />
+                  </radialGradient>
+                  <!-- Gradient phát quang cho các tia nắng -->
+                  <linearGradient id="rayGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stop-color="#ffe082" />
+                    <stop offset="100%" stop-color="#ffa000" />
+                  </linearGradient>
+                  <!-- Bộ lọc phát sáng dịu mắt (Soft Glow) -->
+                  <filter id="sunGlow" x="-30%" y="-30%" width="160%" height="160%">
+                    <feGaussianBlur stdDeviation="3.5" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
 
-          <!-- Submit Button -->
-          <div class="form-field form-submit-field">
-            <label class="field-label-placeholder">&nbsp;</label>
-            <button type="submit" id="addBtn" class="btn btn-primary btn-submit-task">
-              <svg class="btn-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                <line x1="12" y1="5" x2="12" y2="19"></line>
-                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <!-- Vầng hào quang nền mờ (Aura) -->
+                <circle class="sun-aura" cx="50" cy="50" r="26" fill="rgba(255, 193, 7, 0.25)" />
+
+                <!-- Vòng các tia nắng xoay chậm (Sun Rays) -->
+                <g class="sun-rays">
+                  <!-- 8 tia nắng đối xứng 45 độ -->
+                  <rect class="sun-ray ray-1" x="47.5" y="6" width="5" height="15" rx="2.5" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-2" x="47.5" y="79" width="5" height="15" rx="2.5" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-3" x="6" y="47.5" width="15" height="5" rx="2.5" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-4" x="79" y="47.5" width="15" height="5" rx="2.5" fill="url(#rayGradient)" />
+                  
+                  <rect class="sun-ray ray-5" x="19" y="19" width="5" height="15" rx="2.5" transform="rotate(-45 21.5 26.5)" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-6" x="76" y="76" width="5" height="15" rx="2.5" transform="rotate(-45 78.5 83.5)" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-7" x="76" y="19" width="5" height="15" rx="2.5" transform="rotate(45 78.5 26.5)" fill="url(#rayGradient)" />
+                  <rect class="sun-ray ray-8" x="19" y="76" width="5" height="15" rx="2.5" transform="rotate(45 21.5 83.5)" fill="url(#rayGradient)" />
+                </g>
+
+                <!-- Quả cầu tâm mặt trời (Sun Core) -->
+                <circle class="sun-core" cx="50" cy="50" r="22" fill="url(#sunGradient)" filter="url(#sunGlow)" />
               </svg>
-              <span>Thêm việc</span>
+            </div>
+            <div class="temp-wrapper">
+              <span class="temp-value" id="temperature">28</span>
+              <span class="temp-unit">°C</span>
+            </div>
+            <div class="condition-badge" id="condition-badge">Nắng ráo &amp; Ấm áp</div>
+          </div>
+
+          <div class="weather-metrics-grid">
+            <div class="metric-item glass-inset">
+              <span class="metric-icon">💧</span>
+              <div class="metric-info">
+                <span class="metric-label">Độ ẩm</span>
+                <span class="metric-value" id="humidity">65%</span>
+              </div>
+            </div>
+
+            <div class="metric-item glass-inset">
+              <span class="metric-icon">🌬️</span>
+              <div class="metric-info">
+                <span class="metric-label">Gió</span>
+                <span class="metric-value" id="wind-speed">12 km/h</span>
+              </div>
+            </div>
+
+            <div class="metric-item glass-inset">
+              <span class="metric-icon">🌡️</span>
+              <div class="metric-info">
+                <span class="metric-label">Cảm giác như</span>
+                <span class="metric-value" id="feels-like">30°C</span>
+              </div>
+            </div>
+
+            <div class="metric-item glass-inset">
+              <span class="metric-icon">☂️</span>
+              <div class="metric-info">
+                <span class="metric-label">Khả năng mưa</span>
+                <span class="metric-value" id="rain-chance">10%</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="weather-tip glass-inset">
+            <div class="tip-header">
+              <span class="tip-icon">💡</span>
+              <strong>Lời khuyên du lịch</strong>
+            </div>
+            <p id="weather-tip-text">Thời tiết lý tưởng cho các hoạt động ngoài trời, tắm biển và tham quan danh lam thắng cảnh!</p>
+          </div>
+        </section>
+      </aside>
+
+      <!-- Cột Phải: Lịch Trình & Danh Sách Điểm Du Lịch -->
+      <section class="destination-column glass-panel" aria-label="Quản lý lịch trình và địa điểm du lịch">
+        
+        <!-- Khối 1: Lịch Trình Chuyến Đi Cá Nhân (Thêm / Đã đến / Xóa) -->
+        <div class="itinerary-section glass-inset">
+          <div class="itinerary-header">
+            <div class="itinerary-title-group">
+              <span class="itinerary-badge-icon">🗓️</span>
+              <div>
+                <h2 class="itinerary-title">Lịch Trình Chuyến Đi Của Bạn</h2>
+                <p class="itinerary-subtitle">Lên kế hoạch thời gian cho từng điểm đến</p>
+              </div>
+            </div>
+            <div class="itinerary-stats" id="itinerary-stats">0 điểm hẹn</div>
+          </div>
+
+          <!-- Form Thêm Lịch Trình -->
+          <form id="itinerary-form" class="itinerary-form" onsubmit="return false;">
+            <div class="itinerary-input-group name-group">
+              <label for="itinerary-name" class="itinerary-label">Tên địa điểm:</label>
+              <input type="text" id="itinerary-name" placeholder="VD: Ghé thăm Thác Datanla..." required autocomplete="off">
+            </div>
+            <div class="itinerary-input-group time-group">
+              <label for="itinerary-time" class="itinerary-label">Thời gian:</label>
+              <input type="text" id="itinerary-time" placeholder="VD: 9:00 AM hoặc Chiều mai" required autocomplete="off">
+            </div>
+            <button type="submit" id="add-itinerary-btn" class="add-itinerary-btn">
+              <span class="btn-icon">➕</span> Thêm
             </button>
+          </form>
+
+          <!-- Danh sách các mục lịch trình -->
+          <div class="itinerary-list" id="itinerary-list" aria-live="polite">
+            <!-- Render bằng JavaScript -->
           </div>
         </div>
-      </form>
-    </section>
 
-    <!-- ================= 3. TOOLBAR: SEARCH, FILTERS, SORTS & VIEW TOGGLE ================= -->
-    <section class="toolbar-section" aria-label="Tìm kiếm và bộ lọc">
-      <div class="toolbar-primary-row">
-        <!-- Real-time Search Box -->
-        <div class="search-box-wrapper">
-          <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-          </svg>
-          <input 
-            type="search" 
-            id="searchInput" 
-            class="search-input" 
-            placeholder="Tìm kiếm công việc theo từ khóa..."
-            autocomplete="off"
-          >
-          <button type="button" id="clearSearchBtn" class="clear-search-btn" title="Xóa tìm kiếm" style="display: none;">✕</button>
+        <!-- Khối 2: Danh sách địa điểm gợi ý -->
+        <div class="column-header">
+          <div>
+            <h2 class="section-title">Gợi Ý Điểm Đến Phù Hợp Thời Tiết</h2>
+            <p class="section-subtitle">Tìm kiếm, lọc danh mục, sắp xếp &amp; chọn thêm nhanh vào lịch trình</p>
+          </div>
+          <div class="stats-badge" id="total-count-badge">Tổng: 0 địa điểm</div>
         </div>
 
-        <!-- View Switcher (List vs Kanban) -->
-        <div class="view-switcher" role="tablist" aria-label="Chế độ xem">
-          <button type="button" class="view-btn active" id="viewListBtn" data-view="list" role="tab" aria-selected="true" title="Xem dạng danh sách">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <line x1="8" y1="6" x2="21" y2="6"></line>
-              <line x1="8" y1="12" x2="21" y2="12"></line>
-              <line x1="8" y1="18" x2="21" y2="18"></line>
-              <line x1="3" y1="6" x2="3.01" y2="6"></line>
-              <line x1="3" y1="12" x2="3.01" y2="12"></line>
-              <line x1="3" y1="18" x2="3.01" y2="18"></line>
-            </svg>
-            <span>Danh sách</span>
-          </button>
-          <button type="button" class="view-btn" id="viewKanbanBtn" data-view="kanban" role="tab" aria-selected="false" title="Xem bảng Kanban">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <rect x="3" y="3" width="5" height="18" rx="1"></rect>
-              <rect x="10" y="3" width="5" height="12" rx="1"></rect>
-              <rect x="17" y="3" width="5" height="8" rx="1"></rect>
-            </svg>
-            <span>Bảng Kanban</span>
-          </button>
-        </div>
-      </div>
+        <!-- Controls: Tìm kiếm, Lọc, Sắp xếp, Phân trang -->
+        <div class="toolbar glass-inset">
+          <!-- Tìm kiếm -->
+          <div class="control-group search-group">
+            <span class="input-icon">🔍</span>
+            <input type="text" id="search-input" placeholder="Tìm kiếm địa điểm du lịch..." aria-label="Tìm kiếm theo tên địa điểm">
+            <button type="button" id="clear-search-btn" class="clear-btn" title="Xóa tìm kiếm" aria-label="Xóa nội dung tìm kiếm">&times;</button>
+          </div>
 
-      <!-- Secondary Filters & Sort Row -->
-      <div class="toolbar-filters-row">
-        <!-- Status Filter Pills -->
-        <div class="filter-pills-group" role="tablist">
-          <button type="button" class="filter-pill active" data-status="all">Tất cả</button>
-          <button type="button" class="filter-pill" data-status="todo">Cần làm</button>
-          <button type="button" class="filter-pill" data-status="in-progress">Đang làm</button>
-          <button type="button" class="filter-pill" data-status="completed">Đã xong</button>
-        </div>
-
-        <!-- Dropdown Filters: Category, Priority, Sort -->
-        <div class="filter-dropdowns-group">
-          <!-- Filter by Category -->
-          <div class="dropdown-item">
-            <span class="dropdown-label">Danh mục:</span>
-            <select id="filterCategory" class="filter-select">
+          <!-- Lọc danh mục -->
+          <div class="control-group">
+            <label for="category-filter" class="control-label">Danh mục:</label>
+            <select id="category-filter" class="glass-select" aria-label="Lọc theo loại hình">
               <option value="all">Tất cả danh mục</option>
-              <option value="study">📚 Học tập</option>
-              <option value="project">💼 Dự án</option>
-              <option value="chore">🏠 Việc nhà</option>
-              <option value="personal">💖 Cá nhân</option>
+              <option value="Biển đảo">🏖️ Biển đảo</option>
+              <option value="Vùng núi">⛰️ Vùng núi</option>
+              <option value="Văn hóa / Di tích">🏛️ Văn hóa / Di tích</option>
+              <option value="Nghỉ dưỡng">🏕️ Nghỉ dưỡng & Sinh thái</option>
             </select>
           </div>
 
-          <!-- Filter by Priority -->
-          <div class="dropdown-item">
-            <span class="dropdown-label">Ưu tiên:</span>
-            <select id="filterPriority" class="filter-select">
-              <option value="all">Tất cả ưu tiên</option>
-              <option value="high">🔴 Cao (Gấp)</option>
-              <option value="medium">🟡 Trung bình</option>
-              <option value="low">🟢 Thấp</option>
+          <!-- Sắp xếp theo Title -->
+          <div class="control-group">
+            <label for="sort-title" class="control-label">Sắp xếp (Tên):</label>
+            <select id="sort-title" class="glass-select" aria-label="Sắp xếp theo tiêu đề">
+              <option value="asc">Tên (A &rarr; Z)</option>
+              <option value="desc">Tên (Z &rarr; A)</option>
             </select>
           </div>
 
-          <!-- Sort Selector -->
-          <div class="dropdown-item">
-            <span class="dropdown-label">Sắp xếp:</span>
-            <select id="sortSelect" class="filter-select">
-              <option value="newest" selected>Mới nhất trước</option>
-              <option value="oldest">Cũ nhất trước</option>
-              <option value="dueDateAsc">Hạn chót gần nhất ⏳</option>
-              <option value="priorityDesc">Ưu tiên cao nhất 🔴</option>
+          <!-- Chọn số lượng hiển thị trên trang: 10, 20, 50, all -->
+          <div class="control-group">
+            <label for="items-per-page" class="control-label">Hiển thị:</label>
+            <select id="items-per-page" class="glass-select" aria-label="Số mục trên mỗi trang">
+              <option value="10" selected>10 / trang</option>
+              <option value="20">20 / trang</option>
+              <option value="50">50 / trang</option>
+              <option value="all">Tất cả (All)</option>
             </select>
           </div>
         </div>
-      </div>
-    </section>
 
-    <!-- ================= 4. CONTENT VIEWS ================= -->
-    <main class="views-wrapper">
-      
-      <!-- VIEW A: LIST VIEW -->
-      <div id="listViewContainer" class="view-panel active">
-        <ul class="task-list" id="taskList" role="list">
-          <!-- Rendered dynamically via JavaScript -->
-        </ul>
-      </div>
-
-      <!-- VIEW B: KANBAN BOARD VIEW -->
-      <div id="kanbanViewContainer" class="view-panel">
-        <div class="kanban-board">
-          <!-- Column 1: To-Do -->
-          <div class="kanban-column" data-status="todo">
-            <div class="kanban-column-header header-todo">
-              <div class="col-title-wrap">
-                <span class="col-dot"></span>
-                <h3 class="col-title">Cần làm</h3>
-              </div>
-              <span class="col-count-badge" id="kanbanCountTodo">0</span>
-            </div>
-            <div class="kanban-card-list" id="kanbanListTodo"></div>
-          </div>
-
-          <!-- Column 2: In Progress -->
-          <div class="kanban-column" data-status="in-progress">
-            <div class="kanban-column-header header-progress">
-              <div class="col-title-wrap">
-                <span class="col-dot"></span>
-                <h3 class="col-title">Đang thực hiện</h3>
-              </div>
-              <span class="col-count-badge" id="kanbanCountProgress">0</span>
-            </div>
-            <div class="kanban-card-list" id="kanbanListProgress"></div>
-          </div>
-
-          <!-- Column 3: Completed -->
-          <div class="kanban-column" data-status="completed">
-            <div class="kanban-column-header header-done">
-              <div class="col-title-wrap">
-                <span class="col-dot"></span>
-                <h3 class="col-title">Đã hoàn thành</h3>
-              </div>
-              <span class="col-count-badge" id="kanbanCountDone">0</span>
-            </div>
-            <div class="kanban-card-list" id="kanbanListDone"></div>
-          </div>
+        <!-- Danh sách thẻ địa điểm -->
+        <div class="destinations-grid" id="destinations-container" tabindex="0">
+          <!-- Render bằng JS -->
         </div>
-      </div>
 
-      <!-- Empty State Indicator -->
-      <div class="empty-state-card" id="emptyState" style="display: none;">
-        <div class="empty-state-art">🌸</div>
-        <h3 class="empty-state-heading">Không tìm thấy công việc phù hợp</h3>
-        <p class="empty-state-detail" id="emptyStateDetail">Hãy thử thay đổi từ khóa tìm kiếm hoặc thêm một mục tiêu mới nhé!</p>
-      </div>
-
+        <!-- Phân trang (Pagination) -->
+        <div class="pagination-container" id="pagination-wrapper">
+          <div class="pagination-info" id="pagination-info">
+            Đang hiển thị...
+          </div>
+          <nav class="pagination-controls" aria-label="Chuyển trang">
+            <button type="button" class="page-btn prev-next" id="prev-btn" aria-label="Trang trước">&larr; Trước</button>
+            <div class="page-numbers" id="page-numbers"></div>
+            <button type="button" class="page-btn prev-next" id="next-btn" aria-label="Trang tiếp theo">Sau &rarr;</button>
+          </nav>
+        </div>
+      </section>
     </main>
-
-    <!-- ================= 5. FOOTER ================= -->
-    <footer class="dashboard-footer" role="contentinfo">
-      <div class="footer-stats-bar">
-        <span class="footer-stat-item">
-          Tổng số: <strong id="footerTotal">0</strong> việc
-        </span>
-        <span class="footer-divider">•</span>
-        <span class="footer-stat-item">
-          Đang làm: <strong id="footerPending">0</strong> việc
-        </span>
-        <span class="footer-divider">•</span>
-        <span class="footer-stat-item">
-          Đã xong: <strong id="footerCompleted">0</strong> việc
-        </span>
-        <span class="footer-divider">•</span>
-        <span class="footer-stat-item text-danger">
-          Quá hạn: <strong id="footerOverdue">0</strong> việc
-        </span>
-      </div>
-
-      <div class="footer-actions">
-        <button type="button" class="btn-footer-action btn-clear-done" id="clearCompletedBtn">
-          🧹 Dọn dẹp việc đã xong
-        </button>
-        <button type="button" class="btn-footer-action btn-export" id="exportDataBtn" title="Tải về file dữ liệu sao lưu">
-          📥 Xuất dữ liệu (JSON)
-        </button>
-      </div>
-    </footer>
-
   </div>
 
-  <!-- ================= 6. MODAL CHỈNH SỬA CHI TIẾT (EDIT & SUBTASKS) ================= -->
-  <div class="modal-overlay" id="editModal" aria-hidden="true">
-    <div class="modal-container" role="dialog" aria-labelledby="modalTitle" aria-modal="true">
-      <div class="modal-header">
-        <div class="modal-title-group">
-          <span class="modal-icon">✏️</span>
-          <h3 class="modal-title" id="modalTitle">Chỉnh Sửa Chi Tiết Công Việc</h3>
-        </div>
-        <button type="button" class="modal-close-btn" id="closeModalBtn" aria-label="Đóng cửa sổ">✕</button>
-      </div>
-
-      <form id="editTaskForm" class="modal-body" onsubmit="return false;">
-        <input type="hidden" id="editTaskId">
-
-        <!-- Edit Task Title -->
-        <div class="modal-form-group">
-          <label for="editTaskTitle" class="modal-label">Tên công việc:</label>
-          <input type="text" id="editTaskTitle" class="form-control" required maxlength="150">
-        </div>
-
-        <!-- Edit Priority & Category -->
-        <div class="modal-row-2col">
-          <div class="modal-form-group">
-            <label for="editTaskPriority" class="modal-label">Mức độ ưu tiên:</label>
-            <select id="editTaskPriority" class="form-select">
-              <option value="high">🔴 Cao (Gấp)</option>
-              <option value="medium">🟡 Trung bình</option>
-              <option value="low">🟢 Thấp</option>
-            </select>
-          </div>
-
-          <div class="modal-form-group">
-            <label for="editTaskCategory" class="modal-label">Danh mục:</label>
-            <select id="editTaskCategory" class="form-select">
-              <option value="study">📚 Học tập</option>
-              <option value="project">💼 Dự án</option>
-              <option value="chore">🏠 Việc nhà</option>
-              <option value="personal">💖 Cá nhân</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Edit Status & Due Date -->
-        <div class="modal-row-2col">
-          <div class="modal-form-group">
-            <label for="editTaskStatus" class="modal-label">Trạng thái:</label>
-            <select id="editTaskStatus" class="form-select">
-              <option value="todo">📌 Cần làm</option>
-              <option value="in-progress">⏳ Đang thực hiện</option>
-              <option value="completed">✅ Đã hoàn thành</option>
-            </select>
-          </div>
-
-          <div class="modal-form-group">
-            <label for="editTaskDueDate" class="modal-label">Hạn chót:</label>
-            <input type="datetime-local" id="editTaskDueDate" class="form-control">
-          </div>
-        </div>
-
-        <!-- Subtasks Management Section Inside Modal -->
-        <div class="modal-subtasks-section">
-          <div class="subtasks-header">
-            <label class="modal-label">Công việc con (Subtasks):</label>
-            <span class="subtasks-count-pill" id="modalSubtasksCount">0 việc con</span>
-          </div>
-
-          <!-- Add Subtask Input -->
-          <div class="add-subtask-row">
-            <input 
-              type="text" 
-              id="newSubtaskInput" 
-              class="form-control subtask-quick-input" 
-              placeholder="Thêm bước con cụ thể..." 
-              maxlength="100"
-            >
-            <button type="button" id="addSubtaskBtn" class="btn btn-secondary btn-add-subtask">
-              ➕ Thêm
-            </button>
-          </div>
-
-          <!-- Subtasks List -->
-          <ul class="modal-subtask-list" id="modalSubtaskList">
-            <!-- Rendered dynamically -->
-          </ul>
-        </div>
-
-        <!-- Modal Footer Actions -->
-        <div class="modal-footer">
-          <button type="button" class="btn btn-ghost" id="cancelModalBtn">Hủy bỏ</button>
-          <button type="submit" class="btn btn-primary" id="saveEditBtn">💾 Lưu thay đổi</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
-
-  <!-- JavaScript Logic -->
-  <script src="script.js"></script>
+  <!-- Module Theme, Module Hiệu ứng và Module Nghiệp vụ -->
+  <script src="js/theme.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/weather.js"></script>
 </body>
 </html>
